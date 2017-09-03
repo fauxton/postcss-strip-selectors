@@ -1,0 +1,35 @@
+{
+  "name": "postcss-strip-selectors",
+  "version": "0.0.0",
+  "description": "PostCSS plugin to remove specified selectors from your stylesheets",
+  "keywords": [
+    "postcss",
+    "css",
+    "postcss-plugin",
+    "selectors"
+  ],
+  "author": "Curtis Ekstrom <code@fauxton.io>",
+  "license": "MIT",
+  "repository": "clekstro/postcss-strip-selectors",
+  "bugs": {
+    "url": "https://github.com/clekstro/postcss-strip-selectors/issues"
+  },
+  "homepage": "https://github.com/clekstro/postcss-strip-selectors",
+  "dependencies": {
+    "postcss": "^6.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-postcss": "^2.0.2",
+    "jest": "^20.0.0"
+  },
+  "scripts": {
+    "test": "jest && eslint *.js"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-postcss/es5",
+    "env": {
+      "jest": true
+    }
+  }
+}
