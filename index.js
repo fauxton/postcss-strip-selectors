@@ -1,5 +1,12 @@
 var postcss = require('postcss');
 
+/* This implementation was forked from
+ * https://github.com/ShogunPanda/postcss-remove-selectors
+ *
+ * Unfortunately, that package used a regex to strip selectors that started with
+ * a selector, causing `b` to remove `body` which was a non-starter */
+
+
 module.exports = postcss.plugin('postcss-strip-selectors', function (opts) {
   opts = opts || {};
   const { selectors } = opts;
