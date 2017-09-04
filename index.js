@@ -24,7 +24,7 @@ module.exports = postcss.plugin('postcss-strip-selectors', function (opts) {
   const isMatchingElementWithAttr = (s) => elementMatches(s, '[');
   const isMatchingElementWithPseudoClass = (s) => elementMatches(s, ':');
 
-  const toBeRemoved = (s) => {
+  const isMatchingElement = (s) => {
     return isMatchingElement(s)
       || isMatchingElementWithClass(s)
       || isMatchingElementWithAttr(s)
@@ -36,7 +36,7 @@ module.exports = postcss.plugin('postcss-strip-selectors', function (opts) {
   };
 
   const processRule = (rule) => {
-    const allowedSelectors = rule.selectors.filter(s => !toBeRemoved(s) && !matchesRegex(s));
+    const allowedSelectors = rule.selectors.filter(s => !isMatchingElement(s) && !matchesRegex(s));
 
     if(allowedSelectors.length) {
       rule.selectors = allowedSelectors;
