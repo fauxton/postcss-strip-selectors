@@ -114,3 +114,10 @@ it('strips element with pseudo class when element passed', () => {
 
   return run(input, output, { selectors: ['a'] });
 });
+
+it('strips selectors when element attributes passed', () => {
+  const input = `[type="reset"], [type="submit"]{ -webkit-appearance:button; }`;
+  const output = `[type="submit"]{ -webkit-appearance:button; }`;
+
+  return run(input, output, { selectors: [`[type="reset"]`] });
+});
