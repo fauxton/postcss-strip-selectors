@@ -20,11 +20,13 @@ module.exports = postcss.plugin('postcss-strip-selectors', function (opts) {
     const isMatchingElement = (s) => selectors.includes(s);
     const isMatchingElementWithClass = (s) => elementMatches(s, '.');
     const isMatchingElementWithAttr = (s) => elementMatches(s, '[');
+    const isMatchingElementWithPseudoClass = (s) => elementMatches(s, ':');
 
     const toBeRemoved = (s) => {
       return isMatchingElement(s)
         || isMatchingElementWithClass(s)
-        || isMatchingElementWithAttr(s);
+        || isMatchingElementWithAttr(s)
+        || isMatchingElementWithPseudoClass(s);
     };
 
     css.walkRules(rule => {

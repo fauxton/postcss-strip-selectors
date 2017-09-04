@@ -107,3 +107,10 @@ it('strips element with attribute when element passed', () => {
 
   return run(input, output, { selectors: ['input'] });
 });
+
+it('strips element with pseudo class when element passed', () => {
+  const input = `a:active, a:hover{ outline-width:0; }`;
+  const output = ``;
+
+  return run(input, output, { selectors: ['a'] });
+});
