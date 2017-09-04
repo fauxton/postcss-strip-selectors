@@ -9,33 +9,41 @@ var postcss = require('postcss');
 
 module.exports = postcss.plugin('postcss-strip-selectors', function (opts) {
   opts = opts || {};
-  const { selectors } = opts;
+  let { selectors, regexen } = opts;
 
-  if (!Array.isArray(selectors))
-    throw new TypeError("selectors should be a list of elements or classes to remove");
+  if (!Array.isArray(selectors) && !Array.isArray(regexen))
+    throw new TypeError("You must pass either a list of selectors or regexen to be removed");
 
-  return function(css){
-    const elementMatches = (s, char) => s.includes(char) ? s.split(char)[0] : null;
+  selectors = selectors || [];
+  regexen = regexen || [];
 
-    const isMatchingElement = (s) => selectors.includes(s);
-    const isMatchingElementWithClass = (s) => elementMatches(s, '.');
-    const isMatchingElementWithAttr = (s) => elementMatches(s, '[');
-    const isMatchingElementWithPseudoClass = (s) => elementMatches(s, ':');
+  const elementMatches = (s, char) => s.includes(char) ? s.split(char)[0] : null;
 
-    const toBeRemoved = (s) => {
-      return isMatchingElement(s)
-        || isMatchingElementWithClass(s)
-        || isMatchingElementWithAttr(s)
-        || isMatchingElementWithPseudoClass(s);
-    };
+  const isMatchingElement = (s) => selectors.includes(s);
+  const isMatchingElementWithClass = (s) => elementMatches(s, '.');
+  const isMatchingElementWithAttr = (s) => elementMatches(s, '[');
+  const isMatchingElementWithPseudoClass = (s) => elementMatches(s, ':');
 
-    css.walkRules(rule => {
-      const allowedSelectors = rule.selectors.filter(s => !toBeRemoved(s));
-
-      if(allowedSelectors.length)
-        rule.selectors = allowedSelectors;
-      else
-        rule.remove();
-    });
+  const toBeRemoved = (s) => {
+    return isMatchingElement(s)
+      || isMatchingElementWithClass(s)
+      || isMatchingElementWithAttr(s)
+      || isMatchingElementWithPseudoClass(s);
   };
+
+  const matchesRegex = (s) => {
+    return regexen.some(regex => regex.test(s));
+  };
+
+  const processRule = (rule) => {
+    const allowedSelectors = rule.selectors.filter(s => !toBeRemoved(s) && !matchesRegex(s));
+
+    if(allowedSelectors.length) {
+      rule.selectors = allowedSelectors;
+    } else {
+      rule.remove();
+    }
+  };
+
+  return (css) => css.walkRules(rule => processRule(rule));
 });

@@ -121,3 +121,17 @@ it('strips selectors when element attributes passed', () => {
 
   return run(input, output, { selectors: [`[type="reset"]`] });
 });
+
+it('strips selectors matching passed regex', () => {
+  const input = `.foo{ height:0; position:relative; }`;
+  const output = ``;
+
+  return run(input, output, { regexen: [ new RegExp(/\.foo|bar/) ] });
+});
+
+it('does not strip selectors not matching passed regex', () => {
+  const input = `.foo, .bar{ height: 0; }`;
+  const output = `.foo{ height: 0; }`;
+
+  return run(input, output, { regexen: [ new RegExp(/\.bar/) ] });
+});
