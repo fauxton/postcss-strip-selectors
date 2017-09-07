@@ -126,7 +126,7 @@ it('strips selectors matching passed regex', () => {
   const input = `.foo{ height:0; position:relative; }`;
   const output = ``;
 
-  return run(input, output, { regexen: [ new RegExp(/\.foo|bar/) ] });
+  return run(input, output, { regexen: [ new RegExp(/\.foo/) ] });
 });
 
 it('does not strip selectors not matching passed regex', () => {
