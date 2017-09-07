@@ -135,3 +135,10 @@ it('does not strip selectors not matching passed regex', () => {
 
   return run(input, output, { regexen: [ new RegExp(/\.bar/) ] });
 });
+
+it('strips multiple selectors matching regex', () => {
+  const input = `.foo, .bar, .baz, .qux{ height: 0; }`;
+  const output = `.baz, .qux{ height: 0; }`;
+
+  return run(input, output, { regexen: [ new RegExp(/^(\.foo|\.bar)*$/) ] });
+});
